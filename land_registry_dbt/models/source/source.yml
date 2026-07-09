@@ -1,0 +1,48 @@
+version: 1
+
+sources:
+  - name: price_paid
+    database: land_registry
+    schema: source
+
+    tables:
+      - name: pp_2024
+        description: Price Paid data for 2024
+
+        columns: 
+          - name: transaction_id
+            description: unique identifier per transaction; unclean
+            data_tests:
+              - not_null
+              - unique
+
+          - name: sale_price
+            description: price paid for property; can take on negligible values depending on ppd_category_type
+            data_tests:
+              - not_null
+              
+          - name: transaction_date
+            description: date of transaction; can be changed in future releases
+            data_tests:
+              - not_null
+
+          - name: property_type
+            description: type of property
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: ['D', 'S', 'T', 'F', 'O']
+
+          - name: ppd_category_type
+            description: category of property transaction, where A = standard price paid entry, B = additional price paid entry
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: ['A', 'B']
+
+          - name: record_status
+            description: status of record, where A = addition, C = change, D = delete
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: ['A', 'C', 'D']

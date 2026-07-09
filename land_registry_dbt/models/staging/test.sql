@@ -1,0 +1,1 @@
+select * from {{ source('price_paid', 'pp_2024') }}
